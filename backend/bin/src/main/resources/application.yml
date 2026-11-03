@@ -1,0 +1,37 @@
+server.port: 8080
+spring:
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/parkify}
+    username: ${DB_USER:parkify}
+    password: ${DB_PASSWORD:parkify}
+  jpa:
+    hibernate.ddl-auto: update
+    open-in-view: false
+  kafka:
+    bootstrap-servers: ${KAFKA_SERVERS:localhost:9092}
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      acks: all
+    consumer:
+      group-id: parkify
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      auto-offset-reset: earliest
+parkify:
+  jwt-secret: ${JWT_SECRET:change-me-change-me-change-me-change-me-32b}
+  jwt-minutes: 120
+  cors-origin: ${CORS_ORIGIN:http://localhost:5173}
+  kafka-enabled: ${KAFKA_ENABLED:false}    # true only if a Kafka broker is running
+  block-user-overlap: ${BLOCK_USER_OVERLAP:false}  # true = a driver can't hold two overlapping bookings (default: no limit)
+  no-show-grace-minutes: ${NO_SHOW_GRACE_MINUTES:15}  # entry pass must be scanned within this many minutes after the booked start, else NO_SHOW (payment kept)
+  entry-early-minutes: ${ENTRY_EARLY_MINUTES:15}   # the gate accepts an entry pass only this many minutes before the booked start
+  timezone: ${APP_TIMEZONE:Asia/Kolkata}
+  min-lead-minutes: ${MIN_LEAD_MINUTES:15}         # bookings must start at least this many minutes from now
+  payment-mode: ${PAYMENT_MODE:auto}       # auto = real Razorpay when keys are set, else built-in test gateway | razorpay | mock
+  razorpay-key-id: ${RAZORPAY_KEY_ID:}
+  razorpay-key-secret: ${RAZORPAY_KEY_SECRET:}
+  razorpay-webhook-secret: ${RAZORPAY_WEBHOOK_SECRET:}
+  admin-email: ${ADMIN_EMAIL:admin@parkify.com}        # first admin is created on startup if none exists
+  admin-password: ${ADMIN_PASSWORD:Admin@12345}
+management.endpoints.web.exposure.include: health,info

@@ -1,0 +1,51 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html { color-scheme: dark; scrollbar-color: #3a3a42 transparent; scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  input[type=number]::-webkit-inner-spin-button { opacity: .4; }
+  body { @apply bg-base text-ink antialiased; overflow-x: clip; }   /* never show a sideways scrollbar */
+  h1, h2, h3 { @apply tracking-tight; }
+  ::selection { @apply bg-brand-600/40; }
+  /* dropdown lists: dark background, white text (otherwise they open white with unreadable text) */
+  select option, select optgroup { background-color: #0a1428; color: #f2f6ff; }
+}
+@layer components {
+  .btn { @apply inline-flex h-11 items-center justify-center gap-2 rounded-xl border border-line bg-surface px-4 text-sm font-semibold text-ink transition hover:bg-raised disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-500; }
+  .btn-primary { @apply border-brand-600 bg-brand-600 text-white hover:border-brand-700 hover:bg-brand-700; }
+  .btn-ghost { @apply border-transparent bg-transparent hover:bg-raised; }
+  .btn-sm { @apply h-9 px-3 text-[13px]; }
+  .input { @apply h-11 w-full rounded-xl border border-line bg-surface px-3 text-[15px] text-ink placeholder:text-dim focus:border-brand-500 focus:outline-none focus:ring-4 focus:ring-brand-500/25; }
+  .label { @apply flex flex-col gap-1.5 text-xs font-semibold text-mute; }
+  .card { @apply rounded-2xl border border-line bg-surface; }
+  .pill { @apply inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-bold; }
+}
+.grid-bg {
+  background-image: linear-gradient(to right, rgba(255,255,255,.045) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,.045) 1px, transparent 1px);
+  background-size: 52px 52px;
+  -webkit-mask-image: radial-gradient(ellipse at top, #000 30%, transparent 75%); mask-image: radial-gradient(ellipse at top, #000 30%, transparent 75%);
+}
+.no-scrollbar { scrollbar-width: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
+@keyframes pop { from { opacity: 0; transform: translateY(8px) scale(.98); } to { opacity: 1; transform: none; } }
+.pop { animation: pop .18s ease-out; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } .pop { animation: none; } * { transition: none !important; } }
+
+/* map pins and dark OpenStreetMap tiles (Leaflet) */
+.pin{width:36px;height:36px;border-radius:50% 50% 50% 4px;transform:rotate(-45deg);display:grid;place-items:center;border:2px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.55);color:#fff;font-weight:800;font-size:13px}
+.pin span{transform:rotate(45deg)}
+.pin.ok{background:#059669}.pin.low{background:#d97706}.pin.full{background:#e11d48}.pin.sel{background:#1a6dff;width:42px;height:42px}
+.dark-map .leaflet-container{background:#0a1428;font-family:inherit}
+.dark-map .leaflet-tile-pane{filter:invert(1) hue-rotate(180deg) brightness(.92) contrast(.95) saturate(.7)}
+.dark-map .leaflet-control-attribution{background:rgba(5,11,23,.85)!important;color:#8c9bbd!important}
+.dark-map .leaflet-control-attribution a{color:#82afff!important}
+.dark-map .leaflet-bar a{background:#0a1428;color:#f2f6ff;border-color:#192b50}
+.dark-map .leaflet-bar a:hover{background:#101d3a}
+
+/* mobile menu */
+@keyframes slidein { from { transform: translateX(100%); } to { transform: none; } }
+@keyframes fadein { from { opacity: 0; } to { opacity: 1; } }
+.slide-in { animation: slidein .25s ease-out; }
+.fade-in { animation: fadein .25s ease-out; }
+@media (prefers-reduced-motion: reduce) { .slide-in, .fade-in { animation: none; } }
